@@ -1,0 +1,214 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ZombieSurvival
+{
+    class GameManager
+    {
+        Player player;
+        EventManager eventManager;
+        bool isRunning = true;
+
+        // ===== 게임 시작 =====
+        public void Start()
+        {
+            player = new Player();
+            eventManager = new EventManager();
+            Console.WriteLine("🧟 좀비 생존 시뮬레이터 시작!");
+            Console.WriteLine("당신은 이 세계에서 얼마나 버틸 수 있을까요?\n");
+
+            GameLoop();
+        }
+
+        // ===== 메인 게임 루프 =====
+        void GameLoop()
+        {
+            while (isRunning && player.IsAlive())
+            {
+                PrintStatus();
+                HandleInput();
+
+
+
+                CheckEnding();
+                //자동증가 제외
+                //player.Day++;
+            }
+
+            Console.WriteLine("\n게임이 종료되었습니다.");
+        }
+
+        // ===== 상태 출력 =====
+        void PrintStatus()
+        {
+            Console.WriteLine("================================");
+            Console.WriteLine($"Day {player.Day}");
+            Console.WriteLine($"HP   : {player.Hp} / {player.MaxHp}");
+            Console.WriteLine($"Food : {player.Food}");
+            Console.WriteLine($"Ammo : {player.Ammo}");
+            Console.WriteLine($"Action : {player.ActionCount}");
+            Console.WriteLine("================================");
+        }
+
+        // ===== 입력 및 선택 처리 =====
+        void HandleInput()
+        {
+            Console.WriteLine("\n오늘 무엇을 하시겠습니까?");
+            Console.WriteLine("1. 탐색한다");
+            Console.WriteLine("2. 쉰다");
+            Console.WriteLine("3. 거래한다");
+            Console.WriteLine("4. 잠든다");
+            Console.Write("\n선택: ");
+
+            string input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "1":
+                    Explore();
+                    break;
+                case "2":
+                    Rest();
+                    break;
+                case "3":
+                    Trade();
+                    break;
+                case "4":
+                    Sleep();
+                    break;
+                default:
+                    Console.WriteLine("❌ 잘못된 입력입니다. 아무 일도 일어나지 않았습니다.");
+                    break;
+            }
+        }
+
+        // ===== 행동 1: 탐색 =====
+        void Explore()
+        {
+            Console.Clear();
+            Console.WriteLine("🔎 주변을 탐색합니다...");
+            Random rand = new Random();
+            int roll = rand.Next(0, 100);
+
+
+            if (player.Ammo < 5)
+            {
+                Console.WriteLine("❌ 탐색에 필요한 탄약이 부족합니다.");
+            }
+            else
+            {
+                if (roll < 40)
+                {
+                    Console.WriteLine("🎁 식량을 발견했습니다! (+1)");
+                    player.Food++;
+                }
+                else if (roll < 70)
+                {
+                    Console.WriteLine("☠️ 좀비와 마주쳤습니다!");
+                    player.TakeDamage(15);
+                    Console.WriteLine("HP -15");
+                }
+                else
+                {
+                    Console.WriteLine("… 아무 일도 일어나지 않았습니다.");
+                }
+                eventManager.TriggerRandomEvent(player);
+                player.ActionCount++;
+                player.Ammo -= 5;
+
+            }
+
+        }
+
+        // ===== 행동 2: 휴식 =====
+        void Rest()
+        {
+            Console.Clear();
+
+            Console.WriteLine("🛌 휴식을 취합니다...");
+            if (player.Food > 0)
+            {
+                player.ConsumeFood();
+                player.Heal(10);
+                Console.WriteLine("HP +10, Food -1");
+            }
+            else
+            {
+                Console.WriteLine("🍞 식량이 없어 회복하지 못했습니다.");
+            }
+            eventManager.TriggerRandomEvent(player);
+            player.ActionCount++;
+        }
+
+        // ===== 행동 3: 거래 =====
+        void Trade()
+        {
+            Console.Clear();
+            Console.WriteLine("🔁 생존자와 거래를 시도합니다...");
+            if (player.Food >= 2)
+            {
+                player.Food -= 2;
+                player.Ammo += 5;
+                Console.WriteLine("Food -2 → Ammo +5");
+            }
+            else
+            {
+                Console.WriteLine("🍞 식량이 부족해 거래에 실패했습니다.");
+            }
+            eventManager.TriggerRandomEvent(player);
+            player.ActionCount++;
+        }
+
+        // ===== 행동 4: 잠들기 =====
+        void Sleep()
+        {
+            Console.Clear();
+            if (player.ActionCount < 5)
+            {
+                Console.WriteLine("😴 아직 너무 이릅니다...");
+                Console.WriteLine($"(현재 행동 횟수: {player.ActionCount} / 5)");
+                Console.WriteLine("하루를 마치려면 최소 5번의 행동이 필요합니다.");
+                return;
+            }
+
+            Console.WriteLine("🌙 당신은 잠자리에 듭니다...");
+            Console.WriteLine("하루가 지나갔습니다.");
+            Console.WriteLine("개운하게 잠이 들고 체력을 회복했습니다.");
+
+
+
+            // 하루 종료 처리
+            player.Day++;
+            player.Heal(20);
+            player.ActionCount = 0;   // 🔄 다음 날을 위해 초기화
+        }
+
+
+        // ===== 엔딩 체크 =====
+        void CheckEnding()
+        {
+            if (!player.IsAlive())
+            {
+                Console.WriteLine("\n💀 당신은 사망했습니다...");
+                isRunning = false;
+                return;
+            }
+
+            if (player.Food == 0 && player.Ammo < 5)
+            {
+                Console.WriteLine("\n💀 당신은 고립되었습니다...");
+                isRunning = false;
+                return;
+            }
+
+            if (player.Day >= 7)
+            {
+                Console.WriteLine("\n🏆 7일을 생존했습니다! 당신은 살아남았습니다!");
+                isRunning = false;
+            }
+        }
+    }
+}
