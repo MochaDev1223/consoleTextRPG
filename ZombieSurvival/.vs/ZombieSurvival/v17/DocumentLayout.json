@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\zombiesurvival\\eventmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\zombiesurvival\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|solutionrelative:zombiesurvival\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|c:\\lion7project\\consoletextrpg\\zombiesurvival\\zombiesurvival\\eventmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|solutionrelative:zombiesurvival\\eventmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\zombiesurvival\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|solutionrelative:zombiesurvival\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|c:\\lion7project\\consoletextrpg\\zombiesurvival\\zombiesurvival\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|solutionrelative:zombiesurvival\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7BDED4B1-C6BE-4CEF-B5B1-65F19393B9D9}|ZombieSurvival\\ZombieSurvival.csproj|C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\zombiesurvival\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +34,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "EventManager.cs",
               "DocumentMoniker": "C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\ZombieSurvival\\EventManager.cs",
               "RelativeDocumentMoniker": "ZombieSurvival\\EventManager.cs",
@@ -47,20 +47,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\ZombieSurvival\\Program.cs",
               "RelativeDocumentMoniker": "ZombieSurvival\\Program.cs",
               "ToolTip": "C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\ZombieSurvival\\Program.cs",
               "RelativeToolTip": "ZombieSurvival\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-13T08:35:48.741Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "GameManager.cs",
               "DocumentMoniker": "C:\\lion7project\\consoleTextRPG\\ZombieSurvival\\ZombieSurvival\\GameManager.cs",
               "RelativeDocumentMoniker": "ZombieSurvival\\GameManager.cs",
@@ -68,8 +68,7 @@
               "RelativeToolTip": "ZombieSurvival\\GameManager.cs",
               "ViewState": "AgIAAGIAAAAAAAAAAAAswIYAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-13T08:35:06.194Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-13T08:35:06.194Z"
             },
             {
               "$type": "Document",
@@ -81,8 +80,7 @@
               "RelativeToolTip": "ZombieSurvival\\Player.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-13T08:29:04.668Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-13T08:29:04.668Z"
             }
           ]
         }
