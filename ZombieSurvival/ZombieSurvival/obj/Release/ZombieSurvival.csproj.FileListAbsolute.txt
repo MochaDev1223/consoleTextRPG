@@ -1,0 +1,8 @@
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\bin\Release\ZombieSurvival.exe.config
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\bin\Release\ZombieSurvival.exe
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\bin\Release\ZombieSurvival.pdb
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\obj\Release\ZombieSurvival.csproj.AssemblyReference.cache
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\obj\Release\ZombieSurvival.csproj.CoreCompileInputs.cache
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\obj\Release\ZombieSurvival.exe
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\obj\Release\ZombieSurvival.pdb
+C:\lion7project\consoleTextRPG\ZombieSurvival\ZombieSurvival\obj\Release\ZombieSurvival.exe.config

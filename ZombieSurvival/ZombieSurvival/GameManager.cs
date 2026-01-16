@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ZombieSurvival
@@ -15,12 +16,76 @@ namespace ZombieSurvival
         // ===== 게임 시작 =====
         public void Start()
         {
+            ShowIntro();
+
             player = new Player();
             eventManager = new EventManager();
             Console.WriteLine("🧟 좀비 생존 시뮬레이터 시작!");
             Console.WriteLine("당신은 이 세계에서 얼마나 버틸 수 있을까요?\n");
 
             GameLoop();
+        }
+
+        void ShowIntro()
+        {
+            try
+            {
+                Console.Clear();
+                Console.CursorVisible = false;
+
+                string intro = "ZOMBIE SURVIVAL...";
+                int width = Math.Max(1, Console.WindowWidth);
+                int height = Math.Max(1, Console.WindowHeight);
+                int startX = Math.Max(0, (width - intro.Length) / 2);
+                int centerY = Math.Max(0, height / 2);
+
+                // 한 글자씩 출력
+                Console.ForegroundColor = ConsoleColor.Red;
+                for (int i = 0; i < intro.Length; i++)
+                {
+                    int x = startX + i;
+                    if (x >= 0 && x < Console.BufferWidth && centerY >= 0 && centerY < Console.BufferHeight)
+                        Console.SetCursorPosition(x, centerY);
+                    Console.Write(intro[i]);
+                    Thread.Sleep(100); // 글자 간 딜레이 (100ms)
+                }
+
+                // 모두 출력된 후 3초 대기
+                Thread.Sleep(1500);
+
+                // 두 줄 아래에 "Press Spacebar" 표시
+                string prompt = "Press Spacebar";
+                int promptStartX = Math.Max(0, (width - prompt.Length) / 2);
+                int promptY = Math.Min(Console.BufferHeight - 1, centerY + 2);
+                if (promptStartX >= 0 && promptStartX < Console.BufferWidth && promptY >= 0 && promptY < Console.BufferHeight)
+                    Console.SetCursorPosition(promptStartX, promptY);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write(prompt);
+
+                // 기존 키 입력 버퍼 비움
+                while (Console.KeyAvailable)
+                    Console.ReadKey(true);
+
+                // 스페이스바 입력 대기
+                ConsoleKeyInfo key;
+                do
+                {
+                    key = Console.ReadKey(true);
+                } while (key.Key != ConsoleKey.Spacebar);
+
+                // 진행 전 화면 정리
+                Console.Clear();
+                Console.ResetColor();
+            }
+            catch
+            {
+                // 콘솔 크기 제약 등 예외가 발생하면 안전하게 진행
+                Console.Clear();
+            }
+            finally
+            {
+                Console.CursorVisible = false;
+            }
         }
 
         // ===== 메인 게임 루프 =====
@@ -134,12 +199,13 @@ namespace ZombieSurvival
                 player.ConsumeFood();
                 player.Heal(10);
                 Console.WriteLine("HP +10, Food -1");
+                eventManager.TriggerRandomEvent(player);
             }
             else
             {
                 Console.WriteLine("🍞 식량이 없어 회복하지 못했습니다.");
             }
-            eventManager.TriggerRandomEvent(player);
+            
             player.ActionCount++;
         }
 
@@ -153,12 +219,13 @@ namespace ZombieSurvival
                 player.Food -= 2;
                 player.Ammo += 5;
                 Console.WriteLine("Food -2 → Ammo +5");
+                eventManager.TriggerRandomEvent(player);
             }
             else
             {
                 Console.WriteLine("🍞 식량이 부족해 거래에 실패했습니다.");
             }
-            eventManager.TriggerRandomEvent(player);
+            
             player.ActionCount++;
         }
 
