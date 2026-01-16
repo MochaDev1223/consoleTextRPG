@@ -28,64 +28,91 @@ namespace ZombieSurvival
 
         void ShowIntro()
         {
-            try
+            Console.Clear();
+            Console.CursorVisible = false;
+
+            string intro = "ZOMBIE SURVIVAL...";
+            int width = Math.Max(1, Console.WindowWidth);
+            int height = Math.Max(1, Console.WindowHeight);
+            int startX = Math.Max(0, (width - intro.Length) / 2);
+            int centerY = Math.Max(0, height / 2);
+
+            // 한 글자씩 출력
+            Console.ForegroundColor = ConsoleColor.Red;
+            for (int i = 0; i < intro.Length; i++)
             {
-                Console.Clear();
-                Console.CursorVisible = false;
-
-                string intro = "ZOMBIE SURVIVAL...";
-                int width = Math.Max(1, Console.WindowWidth);
-                int height = Math.Max(1, Console.WindowHeight);
-                int startX = Math.Max(0, (width - intro.Length) / 2);
-                int centerY = Math.Max(0, height / 2);
-
-                // 한 글자씩 출력
-                Console.ForegroundColor = ConsoleColor.Red;
-                for (int i = 0; i < intro.Length; i++)
-                {
-                    int x = startX + i;
-                    if (x >= 0 && x < Console.BufferWidth && centerY >= 0 && centerY < Console.BufferHeight)
-                        Console.SetCursorPosition(x, centerY);
-                    Console.Write(intro[i]);
-                    Thread.Sleep(100); // 글자 간 딜레이 (100ms)
-                }
-
-                // 모두 출력된 후 3초 대기
-                Thread.Sleep(1500);
-
-                // 두 줄 아래에 "Press Spacebar" 표시
-                string prompt = "Press Spacebar";
-                int promptStartX = Math.Max(0, (width - prompt.Length) / 2);
-                int promptY = Math.Min(Console.BufferHeight - 1, centerY + 2);
-                if (promptStartX >= 0 && promptStartX < Console.BufferWidth && promptY >= 0 && promptY < Console.BufferHeight)
-                    Console.SetCursorPosition(promptStartX, promptY);
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write(prompt);
-
-                // 기존 키 입력 버퍼 비움
-                while (Console.KeyAvailable)
-                    Console.ReadKey(true);
-
-                // 스페이스바 입력 대기
-                ConsoleKeyInfo key;
-                do
-                {
-                    key = Console.ReadKey(true);
-                } while (key.Key != ConsoleKey.Spacebar);
-
-                // 진행 전 화면 정리
-                Console.Clear();
-                Console.ResetColor();
+                int x = startX + i;
+                if (x >= 0 && x < Console.BufferWidth && centerY >= 0 && centerY < Console.BufferHeight)
+                    Console.SetCursorPosition(x, centerY);
+                Console.Write(intro[i]);
+                Thread.Sleep(100); // 글자 간 딜레이 (100ms)
             }
-            catch
+
+            // 모두 출력된 후 3초 대기
+            Thread.Sleep(1500);
+
+            // 두 줄 아래에 "Press Spacebar" 표시
+            string prompt = "Press Spacebar";
+            int promptStartX = Math.Max(0, (width - prompt.Length) / 2);
+            int promptY = Math.Min(Console.BufferHeight - 1, centerY + 2);
+            if (promptStartX >= 0 && promptStartX < Console.BufferWidth && promptY >= 0 && promptY < Console.BufferHeight)
+                Console.SetCursorPosition(promptStartX, promptY);
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(prompt);
+
+            // 기존 키 입력 버퍼 비움
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
+
+            // 스페이스바 입력 대기
+            ConsoleKeyInfo key;
+            do
             {
-                // 콘솔 크기 제약 등 예외가 발생하면 안전하게 진행
-                Console.Clear();
-            }
-            finally
+                key = Console.ReadKey(true);
+            } while (key.Key != ConsoleKey.Spacebar);
+
+            // 진행 전 화면 정리
+            Console.Clear();
+            Console.ResetColor();
+        }
+
+        void ShowSleepSequence()
+        {
+            Console.Clear();
+            Console.CursorVisible = false;
+
+            string[] lines = new[]
             {
-                Console.CursorVisible = false;
+                    "🌙 당신은 잠자리에 듭니다...",
+                    "하루가 지나갔습니다.",
+                    "개운하게 잠이 들고 체력을 회복했습니다."
+            };
+
+            int width = Math.Max(1, Console.WindowWidth);
+            int height = Math.Max(1, Console.WindowHeight);
+            int startY = Math.Max(0, (height - lines.Length) / 2);
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                int startX = Math.Max(0, (width - line.Length) / 2);
+                int y = startY + i;
+
+                if (startX >= 0 && startX < Console.BufferWidth && y >= 0 && y < Console.BufferHeight)
+                    Console.SetCursorPosition(startX, y);
+                Console.Write(line);
+
+                // 각 줄 출력 후 잠깐 대기 (한 줄씩 엔터 효과)
+                Thread.Sleep(1000);
             }
+
+            // 마지막 줄 출력된 후 2초 대기
+            Thread.Sleep(2000);
+
+            Console.Clear();
+            Console.ResetColor();
         }
 
         // ===== 메인 게임 루프 =====
@@ -96,11 +123,8 @@ namespace ZombieSurvival
                 PrintStatus();
                 HandleInput();
 
-
-
                 CheckEnding();
-                //자동증가 제외
-                //player.Day++;
+                
             }
 
             Console.WriteLine("\n게임이 종료되었습니다.");
@@ -110,7 +134,7 @@ namespace ZombieSurvival
         void PrintStatus()
         {
             Console.WriteLine("================================");
-            Console.WriteLine($"Day {player.Day}");
+            Console.WriteLine($"ㄴDay {player.Day}");
             Console.WriteLine($"HP   : {player.Hp} / {player.MaxHp}");
             Console.WriteLine($"Food : {player.Food}");
             Console.WriteLine($"Ammo : {player.Ammo}");
@@ -205,7 +229,7 @@ namespace ZombieSurvival
             {
                 Console.WriteLine("🍞 식량이 없어 회복하지 못했습니다.");
             }
-            
+
             player.ActionCount++;
         }
 
@@ -225,7 +249,7 @@ namespace ZombieSurvival
             {
                 Console.WriteLine("🍞 식량이 부족해 거래에 실패했습니다.");
             }
-            
+
             player.ActionCount++;
         }
 
@@ -241,11 +265,10 @@ namespace ZombieSurvival
                 return;
             }
 
-            Console.WriteLine("🌙 당신은 잠자리에 듭니다...");
-            Console.WriteLine("하루가 지나갔습니다.");
-            Console.WriteLine("개운하게 잠이 들고 체력을 회복했습니다.");
-
-
+            ShowSleepSequence();
+            //Console.WriteLine("🌙 당신은 잠자리에 듭니다...");
+            //Console.WriteLine("하루가 지나갔습니다.");
+            //Console.WriteLine("개운하게 잠이 들고 체력을 회복했습니다.");
 
             // 하루 종료 처리
             player.Day++;
