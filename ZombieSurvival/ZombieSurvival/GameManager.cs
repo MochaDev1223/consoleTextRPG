@@ -12,6 +12,9 @@ namespace ZombieSurvival
         Player player;
         EventManager eventManager;
         bool isRunning = true;
+        const int MaxActionsPerDay = 5;
+        const int HudHeight = 6;
+
 
         // ===== 게임 시작 =====
         public void Start()
@@ -23,7 +26,7 @@ namespace ZombieSurvival
             eventManager = new EventManager();
             Console.WriteLine("🧟 좀비 생존 시뮬레이터 시작!");
             Console.WriteLine("당신은 이 세계에서 얼마나 버틸 수 있을까요?\n");
-
+            //player.OnDamaged += ScreenShake;
             GameLoop();
         }
 
@@ -153,27 +156,93 @@ namespace ZombieSurvival
         {
             while (isRunning && player.IsAlive())
             {
-                PrintStatus();
-                HandleInput();
+                Console.Clear();
+                DrawHUD();
 
+                // 👇 HUD 아래에서부터 출력 시작
+                Console.SetCursorPosition(0, HudHeight);
+
+                HandleInput();
                 CheckEnding();
 
+                Console.WriteLine("\n(계속하려면 아무 키나 누르세요)");
+                Console.ReadKey(true);
             }
 
             Console.WriteLine("\n게임이 종료되었습니다.");
         }
 
-        // ===== 상태 출력 =====
-        void PrintStatus()
+
+        void DrawHUD()
         {
-            Console.WriteLine("================================");
-            Console.WriteLine($"ㄴDay {player.Day}");
-            Console.WriteLine($"HP   : {player.Hp} / {player.MaxHp}");
-            Console.WriteLine($"Food : {player.Food}");
-            Console.WriteLine($"Ammo : {player.Ammo}");
-            Console.WriteLine($"Action : {player.ActionCount}");
-            Console.WriteLine("================================");
+            Console.SetCursorPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.White;
+
+            DrawBar("Day", player.Day, 7, 20, ConsoleColor.Magenta);
+            DrawBar("HP", player.Hp, player.MaxHp, 20, ConsoleColor.Red);
+            DrawBar("Food", player.Food, 10, 20, ConsoleColor.Green);
+            DrawBar("Ammo", player.Ammo, 50, 20, ConsoleColor.Yellow);
+            DrawBar("Day Progress", player.ActionCount, MaxActionsPerDay, 20, ConsoleColor.Cyan);
+
+            Console.WriteLine(new string('-', Console.WindowWidth));
+            Console.ResetColor();
         }
+
+
+        void DrawBar(string label, int value, int max, int barWidth, ConsoleColor color)
+        {
+            if (max <= 0) max = 1;
+            if (value < 0) value = 0;
+            if (value > max) value = max;
+
+            float ratio = (float)value / max;
+            if (ratio < 0f) ratio = 0f;
+            if (ratio > 1f) ratio = 1f;
+
+            int filled = (int)(ratio * barWidth);
+            if (filled < 0) filled = 0;
+            if (filled > barWidth) filled = barWidth;
+
+            Console.Write($"{label,-12}[");
+            Console.ForegroundColor = color;
+            Console.Write(new string('█', filled));
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write(new string('░', barWidth - filled));
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"] {value}/{max}");
+        }
+
+
+
+        //public void ScreenShake()
+        //{
+        //    int shakeCount = 6;
+        //    int offset = 2;
+
+        //    for (int i = 0; i < shakeCount; i++)
+        //    {
+        //        Console.Clear();
+        //        Console.SetCursorPosition(i % 2 == 0 ? offset : 0, 0);
+        //        DrawHUD();
+        //        Thread.Sleep(40);
+        //    }
+
+        //    Console.Clear();
+        //}
+
+
+
+        // ===== 상태 출력 =====
+        //void PrintStatus()
+        //{
+        //    Console.WriteLine("================================");
+        //    Console.WriteLine($"ㄴDay {player.Day}");
+        //    Console.WriteLine($"HP   : {player.Hp} / {player.MaxHp}");
+        //    Console.WriteLine($"Food : {player.Food}");
+        //    Console.WriteLine($"Ammo : {player.Ammo}");
+        //    Console.WriteLine($"Action : {player.ActionCount}");
+        //    Console.WriteLine("================================");
+        //}
 
         // ===== 입력 및 선택 처리 =====
         void HandleInput()
@@ -186,6 +255,7 @@ namespace ZombieSurvival
             Console.Write("\n선택: ");
 
             string input = Console.ReadLine();
+            Console.WriteLine();
 
             switch (input)
             {
@@ -210,7 +280,7 @@ namespace ZombieSurvival
         // ===== 행동 1: 탐색 =====
         void Explore()
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("🔎 주변을 탐색합니다...");
             Random rand = new Random();
             int roll = rand.Next(0, 100);
@@ -224,8 +294,9 @@ namespace ZombieSurvival
             {
                 if (roll < 40)
                 {
-                    Console.WriteLine("🎁 식량을 발견했습니다! (+1)");
-                    player.Food++;
+                    Console.WriteLine("🎁 식량을 발견했습니다! (+2)");
+                    //player.Food++;
+                    player.Food += 2;
                 }
                 else if (roll < 70)
                 {
@@ -248,7 +319,7 @@ namespace ZombieSurvival
         // ===== 행동 2: 휴식 =====
         void Rest()
         {
-            Console.Clear();
+            //Console.Clear();
 
             Console.WriteLine("🛌 휴식을 취합니다...");
             if (player.Food > 0)
@@ -269,7 +340,7 @@ namespace ZombieSurvival
         // ===== 행동 3: 거래 =====
         void Trade()
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("🔁 생존자와 거래를 시도합니다...");
             if (player.Food >= 2)
             {
@@ -289,7 +360,7 @@ namespace ZombieSurvival
         // ===== 행동 4: 잠들기 =====
         void Sleep()
         {
-            Console.Clear();
+            //Console.Clear();
             if (player.ActionCount < 5)
             {
                 Console.WriteLine("😴 아직 너무 이릅니다...");

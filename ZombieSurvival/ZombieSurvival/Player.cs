@@ -8,6 +8,8 @@ namespace ZombieSurvival
 {
     class Player
     {
+        public Action OnDamaged;
+
         // ===== 상태 변수 =====
         public int Hp;
         public int MaxHp;
@@ -39,6 +41,8 @@ namespace ZombieSurvival
             Hp -= damage;
             if (Hp < 0)
                 Hp = 0;
+
+            OnDamaged?.Invoke();
         }
 
         // ===== 회복 =====
