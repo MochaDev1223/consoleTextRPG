@@ -16,6 +16,7 @@ namespace ZombieSurvival
         // ===== 게임 시작 =====
         public void Start()
         {
+            ShowLoadingScreen();
             ShowIntro();
 
             player = new Player();
@@ -25,6 +26,38 @@ namespace ZombieSurvival
 
             GameLoop();
         }
+
+        void ShowLoadingScreen()
+        {
+            Console.Clear();
+            Console.CursorVisible = false;
+
+            string loading = "Loading...";
+            int width = Math.Max(1, Console.WindowWidth);
+            int height = Math.Max(1, Console.WindowHeight);
+
+            int startX = Math.Max(0, (width - loading.Length) / 2);
+            int centerY = Math.Max(0, height / 2);
+
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(startX, centerY);
+            Console.Write(loading);
+
+            // 키 버퍼 비우기
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
+
+            // Spacebar 대기
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
+            } while (key.Key != ConsoleKey.Spacebar);
+
+            Console.Clear();
+            Console.ResetColor();
+        }
+
 
         void ShowIntro()
         {
@@ -124,7 +157,7 @@ namespace ZombieSurvival
                 HandleInput();
 
                 CheckEnding();
-                
+
             }
 
             Console.WriteLine("\n게임이 종료되었습니다.");
